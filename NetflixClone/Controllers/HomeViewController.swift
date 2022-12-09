@@ -9,10 +9,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let sectionTitles: [String] = ["Trending Movies","Popular", "Trending TV","UpcomingMovies" ,"Top Rated"]
+    let sectionTitles: [String] = ["Trending Movies", "Trending TV","Popular","UpcomingMovies" ,"Top Rated"]
     
 
-    
+    //computer property
     private var homeFeedTable: UITableView = {
         
         let table = UITableView(frame: .zero, style: .grouped)
@@ -28,14 +28,14 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         
         homeFeedTable.delegate = self
-        homeFeedTable.dataSource = self
+       homeFeedTable.dataSource = self
         
         configureNavbar()
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
         
-        getTrendingMovies()
+        fetchData()
 
     }
     override func viewDidLayoutSubviews() {
@@ -44,15 +44,28 @@ class HomeViewController: UIViewController {
     }
     
     
-    private func getTrendingMovies(){
+    private func fetchData(){
         
-        APICaller.shared.getTrendingMovies { results in
+      /*  APICaller.shared.getTrendingMovies { results in
             switch results{
             case.success(let movies):
                 print(movies)
             case.failure(let error):
                 print(error)
             }
+        }*/
+        
+        /*APICaller.shared.getUpComingMovies { _ in
+            
+            
+        }*/
+        
+      /*  APICaller.shared.getPopular { _ in
+            //
+        }*/
+        
+        APICaller.shared.getTopRated { _ in
+            //
         }
     }
 
@@ -62,7 +75,10 @@ class HomeViewController: UIViewController {
        
         
         image = image?.withRenderingMode(.alwaysOriginal)
+        //navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: image, style: .done, target: self, action: nil)
+        
+        //leftBarbutton içn frame oluştur
         
         navigationItem.rightBarButtonItems = [
         
@@ -103,17 +119,23 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20 , y: header.bounds.origin.y, width: 100, height: header.bounds.height)
-        header.textLabel?.textColor = .gray
-        header.textLabel?.text = header.textLabel?.text?.lowercased()
+        guard let header = view as? UITableViewHeaderFooterView,
+              let textLabel = header.textLabel else {return}
+        
+        textLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        textLabel.frame = CGRect(x: header.bounds.origin.x + 20 , y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+        textLabel.textColor = .gray
+        textLabel.text = header.textLabel?.text?.capitalizeFirstLetter()
         
     }
      
     //Scrollara header eklendi
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
+        
+        
+        //ternart operator ? : tek satırda if else benzeri
+        return section < sectionTitles.count ? sectionTitles[section] : nil
+       
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
