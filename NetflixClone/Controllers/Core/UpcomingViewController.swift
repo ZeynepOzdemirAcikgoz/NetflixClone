@@ -15,6 +15,8 @@ class UpcomingViewController: UIViewController {
     //UpcomingView için tableview tanımlandı
     private let upcomingTable: UITableView = {
         
+        
+        //tsblo tanımlaması yapıldı
         let table = UITableView()
         table.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
         return table
@@ -30,6 +32,7 @@ class UpcomingViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         
+        //tablo görünümü eklendi
         view.addSubview(upcomingTable)
         upcomingTable.delegate = self
         upcomingTable.dataSource = self

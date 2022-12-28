@@ -13,6 +13,7 @@
 		726DD6DF294364A60032286E /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726DD6DE294364A60032286E /* TitleCollectionViewCell.swift */; };
 		726DD6E2294366F90032286E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 726DD6E1294366F90032286E /* SDWebImage */; };
 		726DD6E4294366F90032286E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 726DD6E3294366F90032286E /* SDWebImageMapKit */; };
+		72E4CB43295C701500379D0C /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E4CB42295C701500379D0C /* SearchResultsViewController.swift */; };
 		72FA04C1293E294A008603C8 /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA04C0293E294A008603C8 /* HeroHeaderUIView.swift */; };
 		72FA04C3293F6E7F008603C8 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA04C2293F6E7F008603C8 /* APICaller.swift */; };
 		72FA04C5293F77D9008603C8 /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA04C4293F77D9008603C8 /* Title.swift */; };
@@ -33,6 +34,7 @@
 		72440BFC294B02A4007B417A /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		72440BFE294B09F4007B417A /* TitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleViewModel.swift; sourceTree = "<group>"; };
 		726DD6DE294364A60032286E /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
+		72E4CB42295C701500379D0C /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		72FA04C0293E294A008603C8 /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
 		72FA04C2293F6E7F008603C8 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		72FA04C4293F77D9008603C8 /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
@@ -106,6 +108,25 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		72E4CB44295C705200379D0C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				72FD6FF529363A6500DBA93F /* HomeViewController.swift */,
+				72FD6FF729363AAB00DBA93F /* UpcomingViewController.swift */,
+				72FD6FF929363AD800DBA93F /* SearchViewController.swift */,
+				72FD6FFB29363B0100DBA93F /* DownloadsViewController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		72E4CB45295C709300379D0C /* General */ = {
+			isa = PBXGroup;
+			children = (
+				72E4CB42295C701500379D0C /* SearchResultsViewController.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		72FD6FD4293636B800DBA93F = {
 			isa = PBXGroup;
 			children = (
@@ -144,10 +165,8 @@
 		72FD6FF429363A1A00DBA93F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				72FD6FF529363A6500DBA93F /* HomeViewController.swift */,
-				72FD6FF729363AAB00DBA93F /* UpcomingViewController.swift */,
-				72FD6FF929363AD800DBA93F /* SearchViewController.swift */,
-				72FD6FFB29363B0100DBA93F /* DownloadsViewController.swift */,
+				72E4CB45295C709300379D0C /* General */,
+				72E4CB44295C705200379D0C /* Core */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -238,6 +257,7 @@
 				72FA04C1293E294A008603C8 /* HeroHeaderUIView.swift in Sources */,
 				72FD6FFC29363B0100DBA93F /* DownloadsViewController.swift in Sources */,
 				72FD6FE1293636B800DBA93F /* AppDelegate.swift in Sources */,
+				72E4CB43295C701500379D0C /* SearchResultsViewController.swift in Sources */,
 				72FA04C729408B4B008603C8 /* Extensions.swift in Sources */,
 				72FD6FE3293636B800DBA93F /* SceneDelegate.swift in Sources */,
 				72FD6FF829363AAB00DBA93F /* UpcomingViewController.swift in Sources */,
