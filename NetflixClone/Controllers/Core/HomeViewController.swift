@@ -19,9 +19,12 @@ enum Sections: Int {
 
 class HomeViewController: UIViewController {
     
+    private var randomTrendingMovie: Title?
+    private var headerView: HeroHeaderUIView?
+    
     let sectionTitles: [String] = ["Trending Movies", "Trending TV","Popular","UpcomingMovies" ,"Top Rated"]
     
-
+    
     //computer property
     private var homeFeedTable: UITableView = {
         
@@ -38,57 +41,43 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         
         homeFeedTable.delegate = self
-       homeFeedTable.dataSource = self
+        homeFeedTable.dataSource = self
         
         configureNavbar()
         
-        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
+        headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
-      
+        configureHeroHEaderViews()
         
-        
-        
-        
-        //fetchData()
-        
-        
-
     }
+    
+    
+    private func configureHeroHEaderViews(){
+        APICaller.shared.getTrendingMovies { [weak self] result in
+            switch result{
+            case.success(let titles):
+
+                let selectedTitle = titles.randomElement()
+                
+                self?.randomTrendingMovie = selectedTitle
+                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_name ?? selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
+            case.failure(let error):
+                print(error.localizedDescription)
+                
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
     }
     
-    /*
-    private func fetchData(){
-        
-       APICaller.shared.getTrendingMovies { results in
-            switch results{
-            case.success(let movies):
-                print(movies)
-            case.failure(let error):
-                print(error)
-            }
-        }*/
-        
-        /*APICaller.shared.getUpComingMovies { _ in
-            
-            
-        }*/
-        
-      /*  APICaller.shared.getPopular { _ in
-            //
-        }
-        
-        APICaller.shared.getTopRated { _ in
-            //
-        }*/
     
-
     private func configureNavbar(){
         
         var image = UIImage(named: "netflixLogo")
-       
+        
         
         image = image?.withRenderingMode(.alwaysOriginal)
         //navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -97,7 +86,7 @@ class HomeViewController: UIViewController {
         //leftBarbutton içn frame oluştur
         
         navigationItem.rightBarButtonItems = [
-        
+            
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
             
@@ -105,8 +94,8 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
     }
     
-
-
+    
+    
 }
 
 
@@ -123,6 +112,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else{
             return UITableViewCell()
         }
+        
+        cell.delegate = self
         
         switch indexPath.section{
         case Sections.TrendingMovies.rawValue:
@@ -198,14 +189,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         textLabel.text = header.textLabel?.text?.capitalizeFirstLetter()
         
     }
-     
+    
     //Scrollara header eklendi
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         
         //ternart operator ? : tek satırda if else benzeri
         return section < sectionTitles.count ? sectionTitles[section] : nil
-       
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -213,5 +204,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         let offset = scrollView.contentOffset.y + defaultOffset
         
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
+    }
+}
+
+
+extension HomeViewController: CollectionViewTableViewCellDelegate{
+    
+    func collectionViewTableViewCellDidTapCell(_cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async { [weak self] in 
+            let vc = TitlePreviewViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
