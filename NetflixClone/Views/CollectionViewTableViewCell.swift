@@ -58,6 +58,22 @@ class CollectionViewTableViewCell: UITableViewCell {
             self?.collectionView.reloadData()
         }
     }
+  private func downloadTitleAt(indexPaths: [IndexPath]){
+      
+      DataPersistenceManager.shared.downloadTitleWith(model: titles[indexPaths.endIndex]) { result in
+          switch result {
+              
+          case.success():
+              NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
+          case.failure(let error):
+              print(error.localizedDescription)
+          }
+      }
+      
+      
+      //print("Downloading \(titles[indexPaths.endIndex].original_title)")
+
+    }
     
 }
 
@@ -120,6 +136,20 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         
     }
     
+    // uzun basınca indir buttonunun çıkması
+    
+   
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(
+            identifier: nil ,
+            previewProvider: nil) {[weak self]  _ in
+                let downloadAction = UIAction(title: "Download", subtitle: nil, image: nil, identifier: nil , discoverabilityTitle: nil, state: .off) { _ in
+                    self?.downloadTitleAt(indexPaths: indexPaths)
+                }
+                return UIMenu(title: "",image: nil , identifier: nil, options: .displayInline , children: [downloadAction])
+            }
+        return config
+    }
     
     
 }
