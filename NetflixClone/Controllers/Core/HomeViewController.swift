@@ -56,7 +56,7 @@ class HomeViewController: UIViewController {
         APICaller.shared.getTrendingMovies { [weak self] result in
             switch result{
             case.success(let titles):
-
+                
                 let selectedTitle = titles.randomElement()
                 
                 self?.randomTrendingMovie = selectedTitle
@@ -74,27 +74,46 @@ class HomeViewController: UIViewController {
     }
     
     
+    
+    
+    
+    
     private func configureNavbar(){
         
+        let navController = navigationController!
         var image = UIImage(named: "netflixLogo")
-        
-        
         image = image?.withRenderingMode(.alwaysOriginal)
-        //navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: image, style: .done, target: self, action: nil)
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
         
-        //leftBarbutton içn frame oluştur
+        let oiButton = UIButton(type: .system)
+        oiButton.setImage(UIImage(named: "netflixLogo")?.withRenderingMode(.alwaysOriginal), for: .normal)
+       // oiButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        oiButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let bannerHeight = navController.navigationBar.frame.size.height
+        let bannerWidth = bannerHeight / 2
+        
+        
+        let bannerX = bannerWidth / 2 - (image?.size.width)! / 2
+        let bannerY = bannerHeight / 2
+        oiButton.widthAnchor.constraint(equalToConstant: bannerWidth).isActive = true
+        oiButton.heightAnchor.constraint(equalToConstant: bannerHeight).isActive = true
+        
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: oiButton)
+    
+        
+        
         
         navigationItem.rightBarButtonItems = [
             
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
-            
         ]
+        
         navigationController?.navigationBar.tintColor = .white
     }
-    
-    
     
 }
 
@@ -211,7 +230,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
 extension HomeViewController: CollectionViewTableViewCellDelegate{
     
     func collectionViewTableViewCellDidTapCell(_cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
-        DispatchQueue.main.async { [weak self] in 
+        DispatchQueue.main.async { [weak self] in
             let vc = TitlePreviewViewController()
             vc.configure(with: viewModel)
             self?.navigationController?.pushViewController(vc, animated: true)
